@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using ComputerRepairShopManagement.Components;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
