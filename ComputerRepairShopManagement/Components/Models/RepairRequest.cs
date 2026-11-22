@@ -19,14 +19,14 @@ namespace ComputerRepairShopManagement.Components.models
         public string? Status { get; set; }
         public decimal? ServiceCost { get; set; }
 
-        public (string outPutA, string outpPutB) GetRepairSummary(string inv_gen)
+        public (string outPutA, string outPutB) GetRepairSummary(string inv_gen)
         {
             string a = "TECHFIX SOLUTIONS" +
                 "\nCOMPUTER REPAIR INVOICE" +
                 "\n-----------------------------" +
                 "\n\n" +
                 $"Invoice Generated: {inv_gen}" +
-                $"\nRepair ID:       {RepairID}\n\n";
+                $"\nRepair ID:         {RepairID}\n\n";
 
 
             string b =
@@ -35,14 +35,14 @@ namespace ComputerRepairShopManagement.Components.models
                 $"\nDevice Type: {DeviceType}" +
                 $"\nProblem:     {ProblemDescription}" +
                 $"\nRepair Date: {RepairDate?.ToString("yyyy-MM-dd")}" +
-                $"\nStatus:      {Status}" +
+                $"\nStatus:      {Status}\n" +
                 $"\n-----------------------------" +
-                $"\nTOTAL AMOUNT: {ServiceCost}" +
+                $"\nTOTAL AMOUNT: ${ServiceCost}" +
                 $"\n-----------------------------" +
                 $"\n\n" +
                 $"Thank you for choosing TechFix!";
 
-            return (outPutA: a, outpPutB: b);
+            return (outPutA: a, outPutB: b);
         }
     }
 }

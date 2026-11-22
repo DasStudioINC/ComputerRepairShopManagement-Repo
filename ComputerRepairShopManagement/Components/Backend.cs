@@ -153,7 +153,10 @@ namespace ComputerRepairShopManagement.Components
 
         public static RepairRequest SELECT_FROM_REPAIRE_REQUEST_WHERE_REPAIR_ID(int id = 1)
         {
-            string query = $@"SELECT * FROM dbo.RepairRequests WHERE REPAIRID = @REPAIRID";
+            string query = @"SELECT r.RepairId, c.FullName, r.DeviceType, 
+                        r.ProblemDescription, r.RepairDate , r.Status, r.ServiceCost
+                        FROM dbo.RepairRequests AS r INNER JOIN dbo.Customers AS c 
+                        ON c.CUSTOMERID = r.CUSTOMERID WHERE r.RepairID = @REPAIRID ORDER BY REPAIRID ";
 
             try
             {

@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
@@ -70,6 +71,9 @@
                   AutoGenerateColumns="True"
                   IsReadOnly="True"
                   CanUserAddRows="False"/>
+
+        <Button
+            Content="Generate" Click="gensummary" Grid.Row="3"/>
 
     </Grid>
 </Window>
