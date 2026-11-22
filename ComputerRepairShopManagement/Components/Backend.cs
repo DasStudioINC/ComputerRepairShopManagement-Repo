@@ -11,10 +11,9 @@ namespace ComputerRepairShopManagement.Components
 
         private static string connectionString = "Server=zackies\\SQLEXPRESS;Database=TechFixDB;Trusted_Connection=True;TrustServerCertificate=True;";
         
-        public static List<Customer> SELECT_FROM_CUSTOMER(params string[] columns)
+        public static List<Customer> SELECT_FROM_CUSTOMER()
         {
-            string tags = string.Join(",", columns);
-            string query = $@"SELECT {tags} FROM dbo.Customers ORDER BY CUSTOMERID";
+            string query = @"SELECT * FROM dbo.Customers ORDER BY CUSTOMERID";
 
             int count = 0;
             List<Customer> returnData = new List<Customer>();
@@ -31,10 +30,10 @@ namespace ComputerRepairShopManagement.Components
                             while (reader.Read())
                             {
                                 Customer cus = new Customer();
-                                cus.CustumerId = getIndex("CustomerId", columns) == -1 ? null : reader.GetInt32(getIndex("CustomerId", columns));
-                                cus.FullName = getIndex("FullName", columns) == -1 ? null : reader.GetString(getIndex("FullName", columns));
-                                cus.PhoneNumber = getIndex("Phone", columns) == -1 ? null : reader.GetString(getIndex("Phone", columns));
-                                cus.email = getIndex("Email", columns) == -1 ? null : reader.GetString(getIndex("Email", columns));
+                                cus.CustomerId = reader.GetInt32(0);
+                                cus.FullName = reader.GetString(1);
+                                cus.PhoneNumber = reader.GetString(2);
+                                cus.email = reader.GetString(3);
                                 count++;
                                 returnData.Add(cus);
                                 
@@ -58,10 +57,54 @@ namespace ComputerRepairShopManagement.Components
             return returnData;
         }
 
-        public static List<RepairRequest> SELECT_FROM_REPAIRE_REQUEST(params string[] columns)
+        public static Customer SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID(int id = 1)
         {
-            string tags = string.Join(",", columns);
-            string query = $@"SELECT {tags} FROM dbo.RepairRequests AS r INNER JOIN dbo.Customers AS c ON c.CUSTOMERID = r.CUSTOMERID ORDER BY REPAIRID";
+            string query = $@"SELECT * FROM dbo.Customers WHERE CUSTOMERID = @CUSTOMERID";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@CUSTOMERID", id);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Customer cus = new Customer();
+                                cus.CustomerId = reader.GetInt32(0);
+                                cus.FullName = reader.GetString(1);
+                                cus.PhoneNumber = reader.GetString(2);
+                                cus.email = reader.GetString(3);
+
+                                return cus;
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Database Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return new Customer();
+        }
+
+        public static List<RepairRequest> SELECT_FROM_REPAIRE_REQUEST()
+        {
+            string query = @"SELECT r.RepairId, c.FullName, r.DeviceType, 
+                        r.ProblemDescription, r.RepairDate , r.Status, r.ServiceCost
+                        FROM dbo.RepairRequests AS r INNER JOIN dbo.Customers AS c 
+                        ON c.CUSTOMERID = r.CUSTOMERID ORDER BY REPAIRID";
 
             int count = 0;
             List<RepairRequest> returnData = new List<RepairRequest>();
@@ -78,13 +121,13 @@ namespace ComputerRepairShopManagement.Components
                             while (reader.Read())
                             {
                                 RepairRequest request = new RepairRequest();
-                                request.RepairID = getIndex("RepairId", columns) == -1 ? null : reader.GetInt32(getIndex("RepairId", columns));
-                                request.CustomerName = getIndex("CustomerName", columns) == -1 ? null : reader.GetString(getIndex("CustomerName", columns));
-                                request.DeviceType = getIndex("DeviceType", columns) == -1 ? null : reader.GetString(getIndex("DeviceType", columns));
-                                request.ProblemDescription = getIndex("ProblemDescription", columns) == -1 ? null : reader.GetString(getIndex("ProblemDescription", columns));
-                                request.RepairDate = getIndex("repairdate", columns) == -1 ? null : reader.GetDateTime(getIndex("repairdate", columns)).Date;
-                                request.Status = getIndex("status", columns) == -1 ? null : reader.GetString(getIndex("status", columns));
-                                request.ServiceCost = getIndex("Servicecost", columns) == -1 ? null : reader.GetDecimal(getIndex("Servicecost", columns));
+                                request.RepairID = reader.GetInt32(0);
+                                request.CustomerName = reader.GetString(1);
+                                request.DeviceType = reader.GetString(2);
+                                request.ProblemDescription = reader.GetString(3);
+                                request.RepairDate = reader.GetDateTime(4).Date;
+                                request.Status = reader.GetString(5);
+                                request.ServiceCost = reader.GetDecimal(6);
                                 count++;
                                 returnData.Add(request);
                                
@@ -108,8 +151,105 @@ namespace ComputerRepairShopManagement.Components
             return returnData;
         }
 
+        public static RepairRequest SELECT_FROM_REPAIRE_REQUEST_WHERE_REPAIR_ID(int id = 1)
+        {
+            string query = $@"SELECT * FROM dbo.RepairRequests WHERE REPAIRID = @REPAIRID";
 
-      
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(connectionString))
+                {
+
+                    connection.Open();
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@REPAIRID", id);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                RepairRequest request = new RepairRequest();
+                                request.RepairID = reader.GetInt32(0);
+                                request.CustomerName = reader.GetString(1);
+                                request.DeviceType = reader.GetString(2);
+                                request.ProblemDescription = reader.GetString(3);
+                                request.RepairDate = reader.GetDateTime(4).Date;
+                                request.Status = reader.GetString(5);
+                                request.ServiceCost = reader.GetDecimal(6);
+                                return request;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Database Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return new RepairRequest();
+        }
+
+
+        /// <summary>
+        /// Method implementation of inserting into the customers table.
+        /// It does not take in a CustomerId because the creation of the 
+        /// table Customer declared it to be Identity.
+        /// </summary>
+        /// <returns>The column that is converted into a Customer Object.</returns>
+        public static Customer INSERT_INTO_CUSTOMER(string name, string phone, string email)
+        {
+            string query = @"INSERT INTO dbo.Customers
+                (FULLNAME, PHONE, EMAIL) VALUES (@FULLNAME, @PHONE, @EMAIL)";
+
+            
+            int count = 0;
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@FULLNAME", name);
+                        cmd.Parameters.AddWithValue("@PHONE", phone);
+                        cmd.Parameters.AddWithValue("@EMAIL", email);
+
+                        connection.Open();
+                        count = cmd.ExecuteNonQuery();
+                    }
+
+                    
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Database Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            Customer cus = new Customer();
+            cus.CustomerId = count;
+            cus.FullName = name;
+            cus.email = email;
+            cus.PhoneNumber = phone;
+
+            return cus;
+        }
+
+        //public static (Customer a, Customer b) UPDATE_CUSTOMER_COLUMN(int id, string? name, string? phone, string? email) 
+        //{
+
+        //}
 
         private static int getIndex(string target, string[] array)
         {

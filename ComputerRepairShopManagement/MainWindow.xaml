@@ -6,10 +6,70 @@
         xmlns:local="clr-namespace:ComputerRepairShopManagement"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+
+            <TextBox x:Name="FullNameInput"
+                     Width="150"
+                     Margin="0,0,5,0"
+                     ToolTip="Full Name"/>
+
+            <TextBox x:Name="PhoneInput"
+                     Width="120"
+                     Margin="0,0,5,0"
+                     ToolTip="Phone"/>
+
+            <TextBox x:Name="EmailInput"
+                     Width="180"
+                     Margin="0,0,5,0"
+                     ToolTip="Email"/>
+
+            <Button Content="Insert Customer"
+                    Padding="10,5"
+                    Click="InsertCustomer_Click"/>
+
+        </StackPanel>
+
+        <ListBox
+            x:Name="single"
+            HorizontalContentAlignment="Stretch"
+            Grid.Row="1">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Text="{Binding CustomerId}"
+                            Grid.Column="0"
+                            />
+                        <TextBox
+                            Text="{Binding FullName}"
+                            Grid.Column="1"
+                            />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
         <DataGrid x:Name="CustomersGrid"
+                  Grid.Row="2"
                   AutoGenerateColumns="True"
                   IsReadOnly="True"
                   CanUserAddRows="False"/>
+
     </Grid>
 </Window>

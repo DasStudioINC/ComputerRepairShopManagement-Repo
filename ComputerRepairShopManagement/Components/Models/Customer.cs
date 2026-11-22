@@ -8,11 +8,21 @@ namespace ComputerRepairShopManagement.Components
 {
     public class Customer
     {
-        public int? CustumerId { get; set; }
+        public int? CustomerId { get; set; }
         public string? FullName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? email { get; set; }
 
+
+        public string GetCustomerSummary()
+        {
+            return
+                "CUSTOMER INFORMATION" +
+                "\n------------------------" +
+                $"\nName:  {FullName}" +
+                $"\nPhone: {PhoneNumber}" +
+                $"\nEmail: {email}\n\n";
+        }
        
     }
 }

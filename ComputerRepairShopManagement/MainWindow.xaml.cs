@@ -1,46 +1,65 @@
 ﻿
 using ComputerRepairShopManagement.Components;
-using Microsoft.Data.SqlClient;
 using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ComputerRepairShopManagement
 {
     public partial class MainWindow : Window
     {
-        private readonly string[] columns =
-        {
-            "r.RepairId",
-            "c.FullName AS CUSTOMERNAME",
-            "r.DeviceType",
-            "r.ProblemDescription",
-            "r.RepairDate",
-            "r.Status",
-            "r.ServiceCost"
-           
-        };
-
+      
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            single.ItemsSource = new Customer[]
+{
+    Backend.SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID()
+};
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                CustomersGrid.ItemsSource =
-                    Backend.SELECT_FROM_REPAIRE_REQUEST(columns);
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine($"Database Error ({ex.Number}): {ex.Message}");
-                throw;
-            }
+            LoadCustomers();
         }
 
-        
+        private void LoadCustomers()
+        {
+            CustomersGrid.ItemsSource = Backend.SELECT_FROM_CUSTOMER();
+        }
+
+        private void InsertCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FullNameInput.Text) ||
+                string.IsNullOrWhiteSpace(PhoneInput.Text) ||
+                string.IsNullOrWhiteSpace(EmailInput.Text))
+            {
+                MessageBox.Show("Fill in all customer fields.");
+                return;
+            }
+
+           
+
+            var inserted = Backend.INSERT_INTO_CUSTOMER(
+                FullNameInput.Text,
+                PhoneInput.Text,
+                EmailInput.Text
+            );
+
+            if (inserted == null)
+            {
+                return;
+            }
+
+            LoadCustomers();
+
+            FullNameInput.Clear();
+            PhoneInput.Clear();
+            EmailInput.Clear();
+
+            MessageBox.Show(
+                $"Customer successfully inserted!\nCustomer ID: {inserted.CustomerId}"
+            );
+        }
     }
 }
