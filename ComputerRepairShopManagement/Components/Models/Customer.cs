@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerRepairShopManagement.Components
 {
-    public struct Customer
+    public class Customer
     {
         public int? CustumerId { get; set; }
         public string? FullName { get; set; }

@@ -3,6 +3,7 @@ using ComputerRepairShopManagement.Components;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ComputerRepairShopManagement
 {
@@ -10,10 +11,14 @@ namespace ComputerRepairShopManagement
     {
         private readonly string[] columns =
         {
-            "CustomerId",
-            "FullName",
-            "Phone",
-            "Email"
+            "r.RepairId",
+            "c.FullName AS CUSTOMERNAME",
+            "r.DeviceType",
+            "r.ProblemDescription",
+            "r.RepairDate",
+            "r.Status",
+            "r.ServiceCost"
+           
         };
 
         public MainWindow()
@@ -27,7 +32,7 @@ namespace ComputerRepairShopManagement
             try
             {
                 CustomersGrid.ItemsSource =
-                    Backend.SELECT_FROM_CUSTOMER(columns);
+                    Backend.SELECT_FROM_REPAIRE_REQUEST(columns);
             }
             catch (SqlException ex)
             {
@@ -35,5 +40,7 @@ namespace ComputerRepairShopManagement
                 throw;
             }
         }
+
+        
     }
 }
