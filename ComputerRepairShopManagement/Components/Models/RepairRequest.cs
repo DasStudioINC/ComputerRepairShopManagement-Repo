@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerRepairShopManagement.Components.models
 {
+    // All code here was done by Zack Da Silva
     public class RepairRequest
     {
         public int? RepairID { get; set; }

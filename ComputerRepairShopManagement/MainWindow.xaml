@@ -36,6 +36,14 @@
                     Padding="10,5"
                     Click="InsertCustomer_Click"/>
 
+            <Button Content="Update Customer"
+                    Padding="10,5"
+                    Click="UpdateCustomer_Click"/>
+
+            <Button Content="Delete Customer"
+                    Padding="10,5"
+                    Click="DeleteCustomer_Click"/>
+
         </StackPanel>
 
         <ListBox

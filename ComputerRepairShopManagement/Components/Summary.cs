@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ComputerRepairShopManagement.Components
 {
+    // All code here was done by Zack Da Silva
     public static class Summary
     {
         public static void write(RepairRequest request, Customer customer, string path = @"..\..\..\summaries")

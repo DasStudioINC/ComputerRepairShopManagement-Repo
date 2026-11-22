@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerRepairShopManagement.Components.Enums
 {
+    // All code here was done by Zack Da Silva
     public enum DeviceType
     {
         DESKTOP,

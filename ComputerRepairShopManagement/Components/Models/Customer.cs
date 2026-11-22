@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerRepairShopManagement.Components
 {
+    // All code here was done by Zack Da Silva
     public class Customer
     {
         public int? CustomerId { get; set; }

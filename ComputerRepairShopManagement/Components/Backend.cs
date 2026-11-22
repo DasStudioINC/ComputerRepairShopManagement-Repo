@@ -249,10 +249,114 @@ namespace ComputerRepairShopManagement.Components
             return cus;
         }
 
-        //public static (Customer a, Customer b) UPDATE_CUSTOMER_COLUMN(int id, string? name, string? phone, string? email) 
-        //{
+        public static (Customer before, Customer after) UPDATE_CUSTOMER_DETAILS(int id, string? name, string? phone, string? email)
+        {
+            string query = @"UPDATE CUSTOMERS
+                 SET FULLNAME = @FULLNAME,
+                     PHONE = @PHONE,
+                     EMAIL = @EMAIL
+                 WHERE CUSTOMERID = @CUSTOMERID";
 
-        //}
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        Customer orgCus = SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID(id);
+
+                        cmd.Parameters.AddWithValue("@CUSTOMERID", id);
+                        cmd.Parameters.AddWithValue("@FULLNAME", name != null ? name : orgCus.FullName);
+                        cmd.Parameters.AddWithValue("@PHONE", phone != null ? phone : orgCus.PhoneNumber);
+                        cmd.Parameters.AddWithValue("@EMAIL", email != null ? email : orgCus.email);
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+
+                        Customer newCus = SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID(id);
+
+                        return (before: orgCus, after: newCus);
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Database Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return (before: null, after: null);
+        }
+
+        public static Customer DELETE_CUSTOMER_WHERE_CUSTOMER_ID(int id)
+        {
+            var condtion = COUNT_REPAIR_REQUESTS_WHERE_CUSTOMER_ID(id);
+            if (!condtion.check)
+            {
+                MessageBox.Show("YOU CANNOT DELETE A CUSTOMER WITH REMAINING REPAIR REQUEST'S", "CLIENT ERROR");
+                throw new Exception("DELET ERROR");
+            }
+
+            string query = @"DELETE FROM dbo.Customers WHERE CUSTOMERID = @CUSTOMERID";
+
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using(SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@CUSTOMERID", id);
+
+                    connection.Open();
+
+                    Customer cus = SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID(id);
+
+                    cmd.ExecuteNonQuery();
+
+                    return cus;
+                }
+            }
+
+        }
+
+
+        public static (bool check, int count) COUNT_REPAIR_REQUESTS_WHERE_CUSTOMER_ID(int id)
+        {
+            string query = @"SELECT COUNT(*) 
+                     FROM dbo.RepairRequests 
+                     WHERE CUSTOMERID = @CUSTOMERID";
+
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@CUSTOMERID", id);
+
+                        int c = Convert.ToInt32(cmd.ExecuteScalar());
+                        return (check: (c > 0 ? false : true), count: c);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Database Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return (check: false, count: -1);
+        }
 
         private static int getIndex(string target, string[] array)
         {

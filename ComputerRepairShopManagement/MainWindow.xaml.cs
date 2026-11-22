@@ -25,7 +25,7 @@ namespace ComputerRepairShopManagement
 
         private void LoadCustomers()
         {
-            CustomersGrid.ItemsSource = Backend.SELECT_FROM_REPAIRE_REQUEST();
+            CustomersGrid.ItemsSource = Backend.SELECT_FROM_CUSTOMER();
         }
 
         private void InsertCustomer_Click(object sender, RoutedEventArgs e)
@@ -59,6 +59,50 @@ namespace ComputerRepairShopManagement
 
             MessageBox.Show(
                 $"Customer successfully inserted!\nCustomer ID: {inserted.CustomerId}"
+            );
+        }
+
+        private void UpdateCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FullNameInput.Text) ||
+                string.IsNullOrWhiteSpace(PhoneInput.Text) ||
+                string.IsNullOrWhiteSpace(EmailInput.Text))
+            {
+                MessageBox.Show("Fill in all customer fields.");
+                return;
+            }
+
+
+
+            var inserted = Backend.UPDATE_CUSTOMER_DETAILS(
+                3,
+                FullNameInput.Text,
+                PhoneInput.Text,
+                EmailInput.Text
+            );
+
+            if (inserted.after == null)
+            {
+                return;
+            }
+
+            LoadCustomers();
+
+            FullNameInput.Clear();
+            PhoneInput.Clear();
+            EmailInput.Clear();
+
+            MessageBox.Show(
+                $"Customer successfully inserted!\nCustomer ID: {inserted.after.CustomerId}"
+            );
+        }
+
+        private void DeleteCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            var inserted = Backend.DELETE_CUSTOMER_WHERE_CUSTOMER_ID(6);
+            LoadCustomers();
+            MessageBox.Show(
+                $"Customer successfully deleted!\nCustomer ID: {inserted.CustomerId}"
             );
         }
 
