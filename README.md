@@ -1,5 +1,8 @@
 Links:
 
+
+I looked up ways to display Columns depending on the query of a C# Micoroft data usage in WPF using a DataGrid and got a DataTable as the best option
+
 DataTables >> </br>
 1: https://stackoverflow.com/questions/18113278/populate-a-datagridview-with-sql-query-results
 

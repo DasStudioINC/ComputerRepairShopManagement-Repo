@@ -9,6 +9,11 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="12">
-       
+        <DataGrid x:Name="RepairRequestsGrid"
+          Height="200"
+          AutoGenerateColumns="True"
+          IsReadOnly="True"
+          CanUserAddRows="False"
+          AutoGeneratingColumn="RepairRequestsGrid_AutoGeneratingColumn"/>
     </Grid>
 </Window>
