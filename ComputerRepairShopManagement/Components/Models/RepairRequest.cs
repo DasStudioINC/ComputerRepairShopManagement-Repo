@@ -10,7 +10,9 @@ namespace ComputerRepairShopManagement.Components.models
     public class RepairRequest
     {
         public int? RepairID { get; set; }
-        public string? CustomerName { get; set; }
+        public int? CustomerID { get; set; }
+      
+
         public string? DeviceType { get; set; }
 
         public string? ProblemDescription { get; set; }

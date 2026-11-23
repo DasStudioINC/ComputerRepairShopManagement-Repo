@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ComputerRepairShopManagement")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b117ba7aa99de6fce9a8c9f50d27e86a8e3336c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af80952de375c43b203f9ac3cf23d07c0ba57918")]
 [assembly: System.Reflection.AssemblyProductAttribute("ComputerRepairShopManagement")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ComputerRepairShopManagement")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

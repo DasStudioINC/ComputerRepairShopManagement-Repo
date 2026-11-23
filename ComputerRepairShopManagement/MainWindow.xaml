@@ -75,10 +75,11 @@
         </ListBox>
 
         <DataGrid x:Name="CustomersGrid"
-                  Grid.Row="2"
-                  AutoGenerateColumns="True"
-                  IsReadOnly="True"
-                  CanUserAddRows="False"/>
+          Grid.Row="2"
+          AutoGenerateColumns="True"
+          AutoGeneratingColumn="CustomersGrid_AutoGeneratingColumn"
+          IsReadOnly="True"
+          CanUserAddRows="False"/>
 
         <Button
             Content="Generate" Click="gensummary" Grid.Row="3"/>

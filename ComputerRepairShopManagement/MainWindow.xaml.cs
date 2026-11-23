@@ -2,6 +2,7 @@
 using ComputerRepairShopManagement.Components;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ComputerRepairShopManagement
 {
@@ -14,7 +15,7 @@ namespace ComputerRepairShopManagement
             Loaded += MainWindow_Loaded;
             single.ItemsSource = new Customer[]
 {
-    Backend.SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID()
+    Backend.SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID(1).customer
 };
         }
 
@@ -25,7 +26,8 @@ namespace ComputerRepairShopManagement
 
         private void LoadCustomers()
         {
-            CustomersGrid.ItemsSource = Backend.SELECT_FROM_CUSTOMER();
+
+            CustomersGrid.ItemsSource = Backend.SELECT_FROM_CUSTOMER().table.DefaultView;
         }
 
         private void InsertCustomer_Click(object sender, RoutedEventArgs e)
@@ -38,18 +40,15 @@ namespace ComputerRepairShopManagement
                 return;
             }
 
-           
 
-            var inserted = Backend.INSERT_INTO_CUSTOMER(
+
+            Backend.INSERT_INTO_CUSTOMER(
                 FullNameInput.Text,
                 PhoneInput.Text,
                 EmailInput.Text
             );
 
-            if (inserted == null)
-            {
-                return;
-            }
+           
 
             LoadCustomers();
 
@@ -57,9 +56,7 @@ namespace ComputerRepairShopManagement
             PhoneInput.Clear();
             EmailInput.Clear();
 
-            MessageBox.Show(
-                $"Customer successfully inserted!\nCustomer ID: {inserted.CustomerId}"
-            );
+           
         }
 
         private void UpdateCustomer_Click(object sender, RoutedEventArgs e)
@@ -106,9 +103,17 @@ namespace ComputerRepairShopManagement
             );
         }
 
+        private void CustomersGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyName == "CustomerID")
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void gensummary(object sender, RoutedEventArgs e)
         {
-            Summary.write(Backend.SELECT_FROM_REPAIRE_REQUEST_WHERE_REPAIR_ID(), Backend.SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID());
+            //Summary.write(Backend.SELECT_FROM_REPAIRE_REQUEST_WHERE_REPAIR_ID(), Backend.SELECT_FROM_CUSTOMER_WHERE_CUSTOMER_ID());
         }
     }
 }

@@ -1,0 +1,25 @@
+TECHFIX SOLUTIONS
+COMPUTER REPAIR INVOICE
+-----------------------------
+
+Invoice Generated: 2026-11-22 14:34:14
+Repair ID:         1
+
+CUSTOMER INFORMATION
+------------------------
+Name:  John Smith
+Phone: 514-555-0101
+Email: john.smith@example.com
+
+REPAIR DETAILS
+------------------------
+Device Type: Laptop
+Problem:     Screen replacement
+Repair Date: 2026-11-12
+Status:      Completed
+
+-----------------------------
+TOTAL AMOUNT: $150.00
+-----------------------------
+
+Thank you for choosing TechFix!
